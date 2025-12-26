@@ -52,7 +52,11 @@ mixin class BuscaPageComponent {
     return SizedBox(
       height: orientacao == Orientation.portrait ? 200 : 150,
       width: orientacao == Orientation.portrait ? 200 : 200,
-      child: Icon(Icons.location_on_outlined, color: Colors.black, size: 150),
+      child: Icon(
+        Icons.local_post_office_outlined,
+        size: 140,
+        color: Colors.black,
+      ),
     );
   }
 
