@@ -1,4 +1,4 @@
-# Aplicativo Viacep
+# Aplicativo ViaCEP
 
 ## Aplicativo para buscar o CEP via API e mostrar os detalhes da busca.
 
