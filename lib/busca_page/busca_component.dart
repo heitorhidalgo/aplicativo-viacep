@@ -46,8 +46,8 @@ mixin class BuscaPageComponent {
 
   Widget iconeCEP() {
     return SizedBox(
-      height: 200,
-      width: 200,
+      height: orientacao == Orientation.portrait ? 200 : 150,
+      width: orientacao == Orientation.portrait ? 200 : 200,
       child: Icon(Icons.location_on_outlined, color: Colors.black, size: 150),
     );
   }
@@ -65,8 +65,8 @@ mixin class BuscaPageComponent {
 
   Widget barraPesquisaCEP() {
     return Container(
-      height: 50,
-      width: 500,
+      height: orientacao == Orientation.portrait ? 50 : 50,
+      width: orientacao == Orientation.portrait ? 500 : 500,
       decoration: BoxDecoration(
         color: Colors.brown.shade50,
         borderRadius: BorderRadius.circular(20),
@@ -88,8 +88,8 @@ mixin class BuscaPageComponent {
 
   Widget resultadoPesquisaCEP() {
     return Container(
-      height: 170,
-      width: 500,
+      height: orientacao == Orientation.portrait ? 170 : 163,
+      width: orientacao == Orientation.portrait ? 500 : 500,
       decoration: BoxDecoration(
         color: Colors.brown.shade50,
         borderRadius: BorderRadius.circular(20),
