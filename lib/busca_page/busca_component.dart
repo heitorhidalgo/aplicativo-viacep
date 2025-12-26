@@ -14,18 +14,22 @@ mixin class BuscaPageComponent {
 
   Widget body() {
     return SafeArea(
-      child: Column(
-        children: [
-          tituloTopo(),
-          SizedBox(height: orientacao == Orientation.portrait ? 100 : 50),
-          iconeCEP(),
-          SizedBox(height: orientacao == Orientation.portrait ? 100 : 50),
-          digiteCEP(),
-          SizedBox(height: orientacao == Orientation.portrait ? 10 : 5),
-          barraPesquisaCEP(),
-          SizedBox(height: orientacao == Orientation.portrait ? 100 : 50),
-          resultadoPesquisaCEP(),
-        ],
+      child: SingleChildScrollView(
+        physics: BouncingScrollPhysics(),
+        child: Column(
+          children: [
+            tituloTopo(),
+            SizedBox(height: orientacao == Orientation.portrait ? 80 : 20),
+            iconeCEP(),
+            SizedBox(height: orientacao == Orientation.portrait ? 80 : 20),
+            digiteCEP(),
+            SizedBox(height: orientacao == Orientation.portrait ? 10 : 5),
+            barraPesquisaCEP(),
+            SizedBox(height: orientacao == Orientation.portrait ? 50 : 20),
+            resultadoPesquisaCEP(),
+            SizedBox(height: orientacao == Orientation.portrait ? 50 : 20),
+          ],
+        ),
       ),
     );
   }
@@ -73,14 +77,21 @@ mixin class BuscaPageComponent {
         border: Border.all(color: Colors.black),
       ),
       child: TextField(
+        controller: controller.digitaCep,
+        keyboardType: TextInputType.number,
         decoration: InputDecoration(
           hintText: 'Ex: 22010000',
           border: InputBorder.none,
           contentPadding: const EdgeInsets.symmetric(
-            horizontal: 10,
+            horizontal: 15,
             vertical: 10,
           ),
-          suffixIcon: const Icon(Icons.search, color: Colors.black, size: 30),
+          suffixIcon: IconButton(
+            icon: const Icon(Icons.search, color: Colors.black, size: 30),
+            onPressed: () {
+              controller.digitaCep;
+            },
+          ),
         ),
       ),
     );
