@@ -8,6 +8,5 @@ class BuscaPageController extends GetxController {
 
   void buscarCep() {
     String cepDigitado = digitaCep.text;
-    print("teste: $cepDigitado");
   }
 }
