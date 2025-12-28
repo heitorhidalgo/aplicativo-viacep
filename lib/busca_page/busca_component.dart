@@ -110,6 +110,7 @@ mixin class BuscaPageComponent {
         borderRadius: BorderRadius.circular(20),
         border: Border.all(color: Colors.black),
       ),
+      padding: EdgeInsets.only(left: 10, top: 10),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -120,7 +121,6 @@ mixin class BuscaPageComponent {
           Text('IBGE:', style: TextStyle(fontSize: 20)),
         ],
       ),
-      padding: EdgeInsets.only(left: 10, top: 10),
     );
   }
 }
