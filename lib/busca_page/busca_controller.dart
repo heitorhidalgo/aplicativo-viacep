@@ -5,8 +5,4 @@ class BuscaPageController extends GetxController {
   late BuildContext context;
 
   final TextEditingController digitaCep = TextEditingController();
-
-  void buscarCep() {
-    String cepDigitado = digitaCep.text;
-  }
 }

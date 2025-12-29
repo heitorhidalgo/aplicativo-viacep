@@ -1,16 +1,38 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 import 'busca_controller.dart';
 
-mixin class BuscaPageComponent {
+class BuscaComponent extends StatefulWidget {
+  const BuscaComponent({super.key});
+
+  @override
+  State<BuscaComponent> createState() => _BuscaComponentState();
+}
+
+class _BuscaComponentState extends State<BuscaComponent> {
+  @override
+  Widget build(BuildContext context) {
+    controller.context = context;
+    orientacao = MediaQuery.of(context).orientation;
+
+    return Scaffold(body: body());
+  }
+
   final BuscaPageController controller = BuscaPageController();
 
   late Orientation orientacao;
 
-  initialize(BuildContext context) async {
-    controller.context = context;
-    orientacao = MediaQuery.of(context).orientation;
-  }
+  bool _loading = false;
+
+  String? resultado;
+  String logradouro = '';
+  String bairro = '';
+  String cidade = '';
+  String estado = '';
+  String ddd = '';
 
   Widget body() {
     return SafeArea(
@@ -93,7 +115,7 @@ mixin class BuscaPageComponent {
           suffixIcon: IconButton(
             icon: const Icon(Icons.search, color: Colors.black, size: 30),
             onPressed: () {
-              controller.digitaCep;
+              buscarCep();
             },
           ),
         ),
@@ -101,9 +123,13 @@ mixin class BuscaPageComponent {
     );
   }
 
-  Widget resultadoPesquisaCEP() {
+  resultadoPesquisaCEP() {
+    if (_loading) {
+      return Center(child: CircularProgressIndicator());
+    }
+
     return Container(
-      height: orientacao == Orientation.portrait ? 170 : 163,
+      height: orientacao == Orientation.portrait ? 150 : 153,
       width: orientacao == Orientation.portrait ? 500 : 500,
       decoration: BoxDecoration(
         color: Colors.brown.shade50,
@@ -114,13 +140,65 @@ mixin class BuscaPageComponent {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Rua:', style: TextStyle(fontSize: 20)),
-          Text('Bairro:', style: TextStyle(fontSize: 20)),
-          Text('Cidade:', style: TextStyle(fontSize: 20)),
-          Text('Estado:', style: TextStyle(fontSize: 20)),
-          Text('IBGE:', style: TextStyle(fontSize: 20)),
+          Text('Logradouro: $logradouro', style: TextStyle(fontSize: 18)),
+          Text('Bairro: $bairro', style: TextStyle(fontSize: 18)),
+          Text('Cidade: $cidade', style: TextStyle(fontSize: 18)),
+          Text('Estado: $estado', style: TextStyle(fontSize: 18)),
+          Text('DDD: $ddd', style: TextStyle(fontSize: 18)),
         ],
       ),
     );
+  }
+
+  buscarCep() async {
+    _loading = true;
+
+    String cepDigitado = controller.digitaCep.text;
+
+    Uri url = Uri.parse("https://viacep.com.br/ws/$cepDigitado/json/");
+
+    http.Response response;
+
+    response = await http.get(url);
+
+    if (response.statusCode == 200) {
+      Map<String, dynamic> retorno = json.decode(response.body);
+
+      setState(() {
+        logradouro = retorno["logradouro"];
+        bairro = retorno["bairro"];
+        cidade = retorno["localidade"];
+        estado = retorno["estado"];
+        ddd = retorno["ddd"];
+      });
+      //
+      _loading = false;
+    } else {
+      await showDialog(
+        context: context,
+        builder:
+            (context) => AlertDialog(
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text('Fechar', style: TextStyle(fontSize: 18)),
+                ),
+              ],
+              title: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text('Erro de CEP', style: TextStyle(fontSize: 23)),
+                ],
+              ),
+              contentPadding: const EdgeInsets.all(15),
+              content: const Text(
+                'O CEP digitado é inválido',
+                style: TextStyle(fontSize: 18),
+              ),
+            ),
+      );
+    }
   }
 }
