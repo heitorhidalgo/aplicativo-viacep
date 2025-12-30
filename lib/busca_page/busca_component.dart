@@ -171,8 +171,34 @@ class _BuscaComponentState extends State<BuscaComponent> {
         estado = retorno["estado"];
         ddd = retorno["ddd"];
       });
-      //
+
       _loading = false;
+    } else if (cepDigitado == '') {
+      await showDialog(
+        context: context,
+        builder:
+            (context) => AlertDialog(
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text('Fechar', style: TextStyle(fontSize: 18)),
+                ),
+              ],
+              title: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text('Erro de CEP', style: TextStyle(fontSize: 23)),
+                ],
+              ),
+              contentPadding: const EdgeInsets.all(15),
+              content: const Text(
+                'Campo em branco',
+                style: TextStyle(fontSize: 18),
+              ),
+            ),
+      );
     } else {
       await showDialog(
         context: context,
